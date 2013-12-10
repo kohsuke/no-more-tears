@@ -12,6 +12,7 @@ import java.lang.invoke.MethodType;
  */
 public class Linker {
     public static CallSite invokeVirtual(Lookup caller,  String methodName, MethodType signature, String owner) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException {
+        signature = signature.dropParameterTypes(0,1);  // drop 'this'
         return new ConstantCallSite(caller.findVirtual(resolve(caller, owner), methodName, signature));
     }
 
@@ -20,10 +21,12 @@ public class Linker {
     }
 
     public static CallSite invokeInterface(Lookup caller,  String methodName, MethodType signature, String owner) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException {
+        signature = signature.dropParameterTypes(0,1);  // drop 'this'
         return new ConstantCallSite(caller.findVirtual(resolve(caller, owner), methodName, signature));
     }
 
     public static CallSite invokeSpecial(Lookup caller,  String methodName, MethodType signature, String owner) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException {
+        signature = signature.dropParameterTypes(0,1);  // drop 'this'
         return new ConstantCallSite(caller.findSpecial(resolve(caller, owner), methodName, signature, caller.lookupClass()));
     }
 

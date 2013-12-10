@@ -27,11 +27,18 @@ public class MethodTransformer extends MethodVisitor {
     @Override
     public void visitMethodInsn(int opcode, String owner, String name, String desc) {
         Handle handle = LINK_METHODS.get(opcode);
-
         if (handle==null) {
             super.visitMethodInsn(opcode, owner, name, desc);
         } else {
-            mv.visitInvokeDynamicInsn(name,desc, handle, Type.getObjectType(owner).getClassName());
+            Type o = Type.getObjectType(owner);
+
+            if (opcode!=INVOKESTATIC) {
+                // need to add the 'this' argument to the left.
+                // (P1P2P3)R => (ThisP1P2P3)R
+                desc = "("+o+desc.substring(1);
+            }
+
+            mv.visitInvokeDynamicInsn(name, desc, handle, o.getClassName());
         }
     }
 

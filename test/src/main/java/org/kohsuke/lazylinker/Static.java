@@ -5,12 +5,12 @@ package org.kohsuke.lazylinker;
  */
 public class Static {
     public static int compute(int x) {
-        return A+B()+x;
+        return A+B("four")+x;
     }
 
     public static int A = 1;
 
-    public static int B() {
-        return 2;
+    public static int B(String s) {
+        return 2+s.length();
     }
 }

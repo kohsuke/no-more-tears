@@ -9,6 +9,6 @@ import org.junit.Test;
 public class StaticTest extends Assert {
     @Test
     public void test1() {
-        assertEquals(6, Static.compute(3));
+        assertEquals(10, Static.compute(3));
     }
 }
