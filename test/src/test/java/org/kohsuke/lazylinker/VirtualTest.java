@@ -1,14 +1,13 @@
 package org.kohsuke.lazylinker;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 /**
  * @author Kohsuke Kawaguchi
  */
-public class StaticTest {
+public class VirtualTest {
     @Test
     public void test1() throws Exception {
-        new Static().call();
+        new Virtual().call();
     }
 }
