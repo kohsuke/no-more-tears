@@ -34,7 +34,7 @@ public class Linker {
     }
 
     public static CallSite putField(Lookup caller,  String fieldName, MethodType signature, String owner) throws ClassNotFoundException, NoSuchFieldException, IllegalAccessException {
-        return new ConstantCallSite(caller.findSetter(resolve(caller, owner), fieldName, signature.returnType()));
+        return new ConstantCallSite(caller.findSetter(resolve(caller, owner), fieldName, signature.parameterType(1)));
     }
 
     public static CallSite getStatic(Lookup caller,  String fieldName, MethodType signature, String owner) throws ClassNotFoundException, NoSuchFieldException, IllegalAccessException {
@@ -42,7 +42,7 @@ public class Linker {
     }
 
     public static CallSite putStatic(Lookup caller,  String fieldName, MethodType signature, String owner) throws ClassNotFoundException, NoSuchFieldException, IllegalAccessException {
-        return new ConstantCallSite(caller.findStaticSetter(resolve(caller, owner), fieldName, signature.returnType()));
+        return new ConstantCallSite(caller.findStaticSetter(resolve(caller, owner), fieldName, signature.parameterType(0)));
     }
 
     /**

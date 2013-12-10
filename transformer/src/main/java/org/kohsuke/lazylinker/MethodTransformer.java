@@ -11,6 +11,7 @@ import java.util.Map;
 
 import static java.lang.invoke.MethodHandles.*;
 import static org.objectweb.asm.Opcodes.*;
+import static org.objectweb.asm.Type.VOID_TYPE;
 
 /**
  * Converts regular method invocations and field access into invokeDynamic calls
@@ -36,8 +37,28 @@ public class MethodTransformer extends MethodVisitor {
 
     @Override
     public void visitFieldInsn(int opcode, String owner, String name, String desc) {
+        Type o = Type.getObjectType(owner);
+        Type t = Type.getType(desc);
+
+        switch (opcode) {
+        case GETFIELD:
+            desc = Type.getMethodDescriptor(t,o);
+            break;
+        case PUTFIELD:
+            desc = Type.getMethodDescriptor(VOID_TYPE,o,t);
+            break;
+        case GETSTATIC:
+            desc = Type.getMethodDescriptor(t);
+            break;
+        case PUTSTATIC:
+            desc = Type.getMethodDescriptor(VOID_TYPE, t);
+            break;
+        default:
+            throw new IllegalArgumentException("Unexpected opcode: "+opcode);
+        }
+
         Handle handle = LINK_METHODS.get(opcode);
-        mv.visitInvokeDynamicInsn(name, "()"+desc, handle, Type.getObjectType(owner).getClassName());
+        mv.visitInvokeDynamicInsn(name, desc , handle, o.getClassName());
     }
 
 
