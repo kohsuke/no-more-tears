@@ -17,6 +17,7 @@
     <module>runtime</module>
     <module>transformer</module>
     <module>maven-plugin</module>
+    <module>test</module>
   </modules>
 
   <build>

@@ -30,15 +30,16 @@ public class MethodTransformer extends MethodVisitor {
         if (handle==null) {
             super.visitMethodInsn(opcode, owner, name, desc);
         } else {
-            mv.visitInvokeDynamicInsn(name,desc, handle, owner);
+            mv.visitInvokeDynamicInsn(name,desc, handle, Type.getObjectType(owner).getClassName());
         }
     }
 
     @Override
     public void visitFieldInsn(int opcode, String owner, String name, String desc) {
         Handle handle = LINK_METHODS.get(opcode);
-        mv.visitInvokeDynamicInsn(name,desc, handle, "()"+owner);
+        mv.visitInvokeDynamicInsn(name, "()"+desc, handle, Type.getObjectType(owner).getClassName());
     }
+
 
 
     private static final Map<Integer,Handle> LINK_METHODS = new HashMap<Integer,Handle>();
@@ -50,7 +51,7 @@ public class MethodTransformer extends MethodVisitor {
 
 
         LINK_METHODS.put(INVOKEVIRTUAL,     new Handle(H_INVOKESTATIC, linkerName, "invokeVirtual", sig));
-        LINK_METHODS.put(INVOKESPECIAL,     new Handle(H_INVOKESTATIC, linkerName, "invokeSpecial", sig));
+//        LINK_METHODS.put(INVOKESPECIAL,     new Handle(H_INVOKESTATIC, linkerName, "invokeSpecial", sig));
         LINK_METHODS.put(INVOKESTATIC,      new Handle(H_INVOKESTATIC, linkerName, "invokeStatic", sig));
         LINK_METHODS.put(INVOKEINTERFACE,   new Handle(H_INVOKESTATIC, linkerName, "invokeInterface", sig));
         LINK_METHODS.put(GETSTATIC,         new Handle(H_INVOKESTATIC, linkerName, "getStatic", sig));
