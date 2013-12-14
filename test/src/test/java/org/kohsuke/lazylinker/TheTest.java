@@ -25,4 +25,9 @@ public class TheTest {
     public void testField() throws Exception {
         new Field().call();
     }
+
+    @Test
+    public void testException() throws Exception {
+        new ExceptionTest().call();
+    }
 }
