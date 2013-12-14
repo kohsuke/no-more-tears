@@ -14,15 +14,11 @@ import static java.util.Arrays.*;
  * @author Kohsuke Kawaguchi
  */
 public class LinkerBootstrap {
-    /**
-     * Registered linkers that get consulted.
-     */
-    public static List<Linker> LINKERS = new CopyOnWriteArrayList<Linker>(asList(new DefaultLinker()));
 
     public static CallSite invokeVirtual(Lookup caller, String methodName, MethodType signature, String owner) throws ReflectiveOperationException {
         Class<?> o = resolve(caller, owner);
         signature = signature.dropParameterTypes(0,1);  // drop 'this'
-        for (Linker linker : LINKERS) {
+        for (Linker linker : Linker.LINKERS) {
             CallSite c = linker.invokeVirtual(caller, methodName, signature, o);
             if (c!=null)    return c;
         }
@@ -31,7 +27,7 @@ public class LinkerBootstrap {
 
     public static CallSite invokeStatic(Lookup caller,  String methodName, MethodType signature, String owner) throws ReflectiveOperationException {
         Class<?> o = resolve(caller, owner);
-        for (Linker linker : LINKERS) {
+        for (Linker linker : Linker.LINKERS) {
             CallSite c = linker.invokeStatic(caller, methodName, signature, o);
             if (c!=null)    return c;
         }
@@ -41,7 +37,7 @@ public class LinkerBootstrap {
     public static CallSite invokeInterface(Lookup caller,  String methodName, MethodType signature, String owner) throws ReflectiveOperationException {
         Class<?> o = resolve(caller, owner);
         signature = signature.dropParameterTypes(0,1);  // drop 'this'
-        for (Linker linker : LINKERS) {
+        for (Linker linker : Linker.LINKERS) {
             CallSite c = linker.invokeInterface(caller, methodName, signature, o);
             if (c!=null)    return c;
         }
@@ -51,7 +47,7 @@ public class LinkerBootstrap {
     public static CallSite invokeSpecial(Lookup caller,  String methodName, MethodType signature, String owner) throws ReflectiveOperationException {
         Class<?> o = resolve(caller, owner);
         signature = signature.dropParameterTypes(0,1);  // drop 'this'
-        for (Linker linker : LINKERS) {
+        for (Linker linker : Linker.LINKERS) {
             CallSite c = linker.invokeSpecial(caller, methodName, signature, o);
             if (c!=null)    return c;
         }
@@ -61,7 +57,7 @@ public class LinkerBootstrap {
     public static CallSite invokeConstructor(Lookup caller,  String methodName, MethodType signature, String owner) throws ReflectiveOperationException {
         Class<?> o = resolve(caller, owner);
         signature = signature.changeReturnType(void.class);
-        for (Linker linker : LINKERS) {
+        for (Linker linker : Linker.LINKERS) {
             CallSite c = linker.invokeConstructor(caller, signature, o);
             if (c!=null)    return c;
         }
@@ -72,7 +68,7 @@ public class LinkerBootstrap {
     public static CallSite getField(Lookup caller,  String fieldName, MethodType signature, String owner) throws ReflectiveOperationException {
         Class<?> rt = signature.returnType();
         Class<?> o = resolve(caller, owner);
-        for (Linker linker : LINKERS) {
+        for (Linker linker : Linker.LINKERS) {
             CallSite c = linker.getField(caller, fieldName, rt, o);
             if (c!=null)    return c;
         }
@@ -82,7 +78,7 @@ public class LinkerBootstrap {
     public static CallSite putField(Lookup caller,  String fieldName, MethodType signature, String owner) throws ReflectiveOperationException {
         Class<?> rt = signature.parameterType(1);
         Class<?> o = resolve(caller, owner);
-        for (Linker linker : LINKERS) {
+        for (Linker linker : Linker.LINKERS) {
             CallSite c = linker.putField(caller, fieldName, rt, o);
             if (c!=null)    return c;
         }
@@ -92,7 +88,7 @@ public class LinkerBootstrap {
     public static CallSite getStatic(Lookup caller,  String fieldName, MethodType signature, String owner) throws ReflectiveOperationException {
         Class<?> rt = signature.returnType();
         Class<?> o = resolve(caller, owner);
-        for (Linker linker : LINKERS) {
+        for (Linker linker : Linker.LINKERS) {
             CallSite c = linker.getStatic(caller, fieldName, rt, o);
             if (c!=null)    return c;
         }
@@ -102,7 +98,7 @@ public class LinkerBootstrap {
     public static CallSite putStatic(Lookup caller,  String fieldName, MethodType signature, String owner) throws ReflectiveOperationException {
         Class<?> rt = signature.parameterType(0);
         Class<?> o = resolve(caller, owner);
-        for (Linker linker : LINKERS) {
+        for (Linker linker : Linker.LINKERS) {
             CallSite c = linker.putStatic(caller, fieldName, rt, o);
             if (c!=null)    return c;
         }
