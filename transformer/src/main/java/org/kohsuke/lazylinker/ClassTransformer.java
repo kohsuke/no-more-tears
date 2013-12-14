@@ -233,7 +233,7 @@ public class ClassTransformer extends ClassVisitor {
     static {
         String sig = MethodType.methodType(CallSite.class,
                 Lookup.class, String.class, MethodType.class, String.class).toMethodDescriptorString();
-        String linkerName = Type.getInternalName(Linker.class);
+        String linkerName = Type.getInternalName(LinkerBootstrap.class);
 
         CONSTRUCTOR_LINKER = new Handle(H_INVOKESTATIC, linkerName, "invokeConstructor", sig);
 

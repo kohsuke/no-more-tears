@@ -1,60 +1,52 @@
 package org.kohsuke.lazylinker;
 
 import java.lang.invoke.CallSite;
-import java.lang.invoke.ConstantCallSite;
 import java.lang.invoke.MethodHandles.Lookup;
 import java.lang.invoke.MethodType;
+import java.lang.reflect.Member;
 
 /**
- * Invokedynamic bootstrap methods.
+ * Performs the linking.
+ *
+ * Different call back method is provided for each kind of operation that the lazy-linker can defer the linking.
+ *
+ * The meaning of the parameters is as follows:
+ *
+ * <dl>
+ * <dt>caller
+ * <dd>Provide information about the call site that requires linking. {@link Lookup#lookupClass()} in particular.
+ *
+ * <dt>methodName/fieldName
+ * <dd>Name of the method/field specified in the original code to link to. Equivalent of {@link Member#getName()}
+ *
+ * <dt>signature
+ * <dd>Signature of the method that was specified in the original code before it was modified by lazy-linker.
+ *
+ * <dt>fieldType
+ * <dd>Type of the field in the original code.
+ *
+ * <dt>owner
+ * <dd>Class that the method/field is supposed to belong to.
+ * </dl>
  *
  * @author Kohsuke Kawaguchi
  */
-public class Linker {
-    public static CallSite invokeVirtual(Lookup caller,  String methodName, MethodType signature, String owner) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException {
-        signature = signature.dropParameterTypes(0,1);  // drop 'this'
-        return new ConstantCallSite(caller.findVirtual(resolve(caller, owner), methodName, signature));
-    }
+public abstract class Linker {
+    public abstract CallSite invokeVirtual(Lookup caller,  String methodName, MethodType signature, Class<?> owner) throws ReflectiveOperationException;
 
-    public static CallSite invokeStatic(Lookup caller,  String methodName, MethodType signature, String owner) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException {
-        return new ConstantCallSite(caller.findStatic(resolve(caller, owner), methodName, signature));
-    }
+    public abstract CallSite invokeStatic(Lookup caller,  String methodName, MethodType signature, Class<?> owner) throws ReflectiveOperationException;
 
-    public static CallSite invokeInterface(Lookup caller,  String methodName, MethodType signature, String owner) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException {
-        signature = signature.dropParameterTypes(0,1);  // drop 'this'
-        return new ConstantCallSite(caller.findVirtual(resolve(caller, owner), methodName, signature));
-    }
+    public abstract CallSite invokeInterface(Lookup caller,  String methodName, MethodType signature, Class<?> owner) throws ReflectiveOperationException;
 
-    public static CallSite invokeSpecial(Lookup caller,  String methodName, MethodType signature, String owner) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException {
-        signature = signature.dropParameterTypes(0,1);  // drop 'this'
-        return new ConstantCallSite(caller.findSpecial(resolve(caller, owner), methodName, signature, caller.lookupClass()));
-    }
+    public abstract CallSite invokeSpecial(Lookup caller,  String methodName, MethodType signature, Class<?> owner) throws ReflectiveOperationException;
 
-    public static CallSite invokeConstructor(Lookup caller,  String methodName, MethodType signature, String owner) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException {
-        signature = signature.changeReturnType(void.class);
-        return new ConstantCallSite(caller.findConstructor(resolve(caller,owner), signature));
-    }
+    public abstract CallSite invokeConstructor(Lookup caller,  MethodType signature, Class<?> owner) throws ReflectiveOperationException;
 
-    public static CallSite getField(Lookup caller,  String fieldName, MethodType signature, String owner) throws ClassNotFoundException, NoSuchFieldException, IllegalAccessException {
-        return new ConstantCallSite(caller.findGetter(resolve(caller, owner),fieldName,signature.returnType()));
-    }
+    public abstract CallSite getField(Lookup caller,  String fieldName, Class<?> fieldType, Class<?> owner) throws ReflectiveOperationException;
 
-    public static CallSite putField(Lookup caller,  String fieldName, MethodType signature, String owner) throws ClassNotFoundException, NoSuchFieldException, IllegalAccessException {
-        return new ConstantCallSite(caller.findSetter(resolve(caller, owner), fieldName, signature.parameterType(1)));
-    }
+    public abstract CallSite putField(Lookup caller,  String fieldName, Class<?> fieldType, Class<?> owner) throws ReflectiveOperationException;
 
-    public static CallSite getStatic(Lookup caller,  String fieldName, MethodType signature, String owner) throws ClassNotFoundException, NoSuchFieldException, IllegalAccessException {
-        return new ConstantCallSite(caller.findStaticGetter(resolve(caller, owner), fieldName, signature.returnType()));
-    }
+    public abstract CallSite getStatic(Lookup caller,  String fieldName, Class<?> fieldType, Class<?> owner) throws ReflectiveOperationException;
 
-    public static CallSite putStatic(Lookup caller,  String fieldName, MethodType signature, String owner) throws ClassNotFoundException, NoSuchFieldException, IllegalAccessException {
-        return new ConstantCallSite(caller.findStaticSetter(resolve(caller, owner), fieldName, signature.parameterType(0)));
-    }
-
-    /**
-     * Resolves the class name in the context of the caller.
-     */
-    private static Class<?> resolve(Lookup caller, String owner) throws ClassNotFoundException {
-        return caller.lookupClass().getClassLoader().loadClass(owner);
-    }
+    public abstract CallSite putStatic(Lookup caller,  String fieldName, Class<?> fieldType, Class<?> owner) throws ReflectiveOperationException;
 }
