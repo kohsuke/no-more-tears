@@ -11,7 +11,7 @@
   <version>1.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
-  <name>Resolves linking at runtime for additional flexibility</name>
+  <name>Lazy Linker</name>
 
   <modules>
     <module>runtime</module>

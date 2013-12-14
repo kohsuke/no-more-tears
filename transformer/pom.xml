@@ -7,7 +7,7 @@
     <relativePath>../pom.xml</relativePath>
   </parent>
   <artifactId>lazy-linker-transformer</artifactId>
-  <name>Lazy Linker Runtime</name>
+  <name>Lazy Linker Class File Transformer</name>
 
   <dependencies>
     <dependency>
