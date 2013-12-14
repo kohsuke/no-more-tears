@@ -16,7 +16,12 @@ import org.objectweb.asm.tree.analysis.AnalyzerException;
 import org.objectweb.asm.tree.analysis.Frame;
 import org.objectweb.asm.tree.analysis.SourceValue;
 
+import java.lang.invoke.CallSite;
+import java.lang.invoke.MethodHandles.Lookup;
+import java.lang.invoke.MethodType;
+import java.util.HashMap;
 import java.util.ListIterator;
+import java.util.Map;
 
 import static org.objectweb.asm.Opcodes.*;
 import static org.objectweb.asm.Type.*;
@@ -86,7 +91,7 @@ public class ClassTransformer extends ClassVisitor {
                             }
 
                             String d = m.desc;
-                            Handle handle = MethodTransformer.LINK_METHODS.get(op);
+                            Handle handle = LINK_METHODS.get(op);
                             if (handle==null) {
                                 // leave this instruction as is
                             } else {
@@ -107,7 +112,7 @@ public class ClassTransformer extends ClassVisitor {
                                     // we change that to the return type.
                                     d = d.substring(0,d.lastIndexOf(')'))+')'+o.getDescriptor();
                                     // JVM doesn't seem to like the name '<init>', so we change it to another name.
-                                    InvokeDynamicInsnNode inv = new InvokeDynamicInsnNode("init", d, MethodTransformer.CONSTRUCTOR_LINKER, o.getClassName());
+                                    InvokeDynamicInsnNode inv = new InvokeDynamicInsnNode("init", d, CONSTRUCTOR_LINKER, o.getClassName());
 
                                     SourceValue top = getArgumentValue(f, m, -2);
                                     if (top==null) {
@@ -162,7 +167,7 @@ public class ClassTransformer extends ClassVisitor {
                                 throw new IllegalArgumentException("Unexpected opcode: "+op);
                             }
 
-                            Handle handle = MethodTransformer.LINK_METHODS.get(op);
+                            Handle handle = LINK_METHODS.get(op);
                             this.instructions.set(fi, new InvokeDynamicInsnNode(fi.name, desc, handle, o.getClassName()));
                         }
                     }
@@ -209,5 +214,26 @@ public class ClassTransformer extends ClassVisitor {
         private ImplicitThisInsnNode() {
             super(-1);
         }
+    }
+
+    static final Map<Integer,Handle> LINK_METHODS = new HashMap<>();
+
+    static final Handle CONSTRUCTOR_LINKER;
+
+    static {
+        String sig = MethodType.methodType(CallSite.class,
+                Lookup.class, String.class, MethodType.class, String.class).toMethodDescriptorString();
+        String linkerName = Type.getInternalName(Linker.class);
+
+        CONSTRUCTOR_LINKER = new Handle(H_INVOKESTATIC, linkerName, "invokeConstructor", sig);
+
+        LINK_METHODS.put(INVOKEVIRTUAL,     new Handle(H_INVOKESTATIC, linkerName, "invokeVirtual", sig));
+        LINK_METHODS.put(INVOKESPECIAL,     new Handle(H_INVOKESTATIC, linkerName, "invokeSpecial", sig));
+        LINK_METHODS.put(INVOKESTATIC,      new Handle(H_INVOKESTATIC, linkerName, "invokeStatic", sig));
+        LINK_METHODS.put(INVOKEINTERFACE,   new Handle(H_INVOKESTATIC, linkerName, "invokeInterface", sig));
+        LINK_METHODS.put(GETSTATIC,         new Handle(H_INVOKESTATIC, linkerName, "getStatic", sig));
+        LINK_METHODS.put(PUTSTATIC,         new Handle(H_INVOKESTATIC, linkerName, "putStatic", sig));
+        LINK_METHODS.put(GETFIELD,          new Handle(H_INVOKESTATIC, linkerName, "getField", sig));
+        LINK_METHODS.put(PUTFIELD,          new Handle(H_INVOKESTATIC, linkerName, "putField", sig));
     }
 }
