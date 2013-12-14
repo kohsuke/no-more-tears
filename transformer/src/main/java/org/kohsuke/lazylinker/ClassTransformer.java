@@ -208,6 +208,9 @@ public class ClassTransformer extends ClassVisitor {
 
     private static final String TRANSFORMED = Type.getDescriptor(LazilyLinked.class);
 
+    /**
+     * Used to track the uninitialized 'this' value set to the local variable #0 of the constructor call.
+     */
     private static final AbstractInsnNode IMPLICIT_THIS = new ImplicitThisInsnNode();
 
     private static final class ImplicitThisInsnNode extends InsnNode {
@@ -216,8 +219,14 @@ public class ClassTransformer extends ClassVisitor {
         }
     }
 
+    /**
+     * From opcode to the bootstrap method of invokeDynamic.
+     */
     static final Map<Integer,Handle> LINK_METHODS = new HashMap<>();
 
+    /**
+     * Bootstrap method for an object instantiation.
+     */
     static final Handle CONSTRUCTOR_LINKER;
 
     static {
