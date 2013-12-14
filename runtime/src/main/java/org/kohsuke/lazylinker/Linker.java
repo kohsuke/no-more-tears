@@ -35,7 +35,6 @@ public class Linker {
         return new ConstantCallSite(caller.findConstructor(resolve(caller,owner), signature));
     }
 
-
     public static CallSite getField(Lookup caller,  String fieldName, MethodType signature, String owner) throws ClassNotFoundException, NoSuchFieldException, IllegalAccessException {
         return new ConstantCallSite(caller.findGetter(resolve(caller, owner),fieldName,signature.returnType()));
     }
@@ -53,7 +52,7 @@ public class Linker {
     }
 
     /**
-     * Resolves the class name in the context of the caler.
+     * Resolves the class name in the context of the caller.
      */
     private static Class<?> resolve(Lookup caller, String owner) throws ClassNotFoundException {
         return caller.lookupClass().getClassLoader().loadClass(owner);
