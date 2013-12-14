@@ -13,7 +13,7 @@
   <body>
     <menu name="No More Tears">
       <item name="Introduction"                   href="/index.html"/>
-      <item name="Source code" href="https://github.com/kohsuke/${project.artifactId}"/>
+      <item name="Source code" href="https://github.com/kohsuke/no-more-tears"/>
     </menu>
 
     <menu name="References">

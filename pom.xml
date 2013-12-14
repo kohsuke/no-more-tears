@@ -12,6 +12,7 @@
   <packaging>pom</packaging>
 
   <name>No More Tears</name>
+  <description>Defer the resolution of symbols to runtime with invokeDynamic</description>
 
   <modules>
     <module>runtime</module>
@@ -47,15 +48,15 @@
   </build>
 
   <scm>
-    <connection>scm:git:git@github.com/kohsuke/${project.artifactId}.git</connection>
-    <developerConnection>scm:git:ssh://git@github.com/kohsuke/${project.artifactId}.git</developerConnection>
-    <url>http://${project.artifactId}.kohsuke.org/</url>
+    <connection>scm:git:git@github.com/kohsuke/no-more-tears.git</connection>
+    <developerConnection>scm:git:ssh://git@github.com/kohsuke/no-more-tears.git</developerConnection>
+    <url>http://no-more-tears.kohsuke.org/</url>
   </scm>
 
   <distributionManagement>
     <site>
       <id>github-pages</id>
-      <url>gitsite:git@github.com/kohsuke/${project.artifactId}.git</url>
+      <url>gitsite:git@github.com/kohsuke/no-more-tears.git</url>
     </site>
   </distributionManagement>
 
