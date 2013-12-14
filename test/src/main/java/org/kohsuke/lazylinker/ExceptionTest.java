@@ -15,8 +15,8 @@ public class ExceptionTest extends Assert implements Callable {
         try {
             foo();
         } catch (ArithmeticException e) {
-            assertTrue(e.getStackTrace()[0].getLineNumber()==30);
-            assertTrue(e.getStackTrace()[1].getLineNumber()==26);
+            assertTrue(e.getStackTrace()[0].getLineNumber()==29);
+            assertTrue(e.getStackTrace()[1].getLineNumber()==25);
         }
         return null;
     }
