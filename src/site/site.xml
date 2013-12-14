@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project name="No More Tears">
+  <bannerLeft>
+    <name>No More Tears</name>
+    <href>http://no-more-tears.kohsuke.org/</href>
+  </bannerLeft>
+  <skin>
+    <groupId>org.kohsuke</groupId>
+    <artifactId>maven-skin</artifactId>
+    <version>1.2</version>
+  </skin>
+
+  <body>
+    <menu name="No More Tears">
+      <item name="Introduction"                   href="/index.html"/>
+      <item name="Source code" href="https://github.com/kohsuke/${project.artifactId}"/>
+    </menu>
+
+    <menu name="References">
+      <item name="Javadoc" href="apidocs/index.html"/>
+    </menu>
+
+    <menu ref="reports"/>
+  </body>
+</project>
+
