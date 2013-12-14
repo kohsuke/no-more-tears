@@ -1,18 +1,18 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>org.kohsuke.lazy-linker</groupId>
-    <artifactId>lazy-linker-parent</artifactId>
+    <groupId>org.kohsuke.no-more-tears</groupId>
+    <artifactId>no-more-tears-parent</artifactId>
     <version>1.0-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
-  <artifactId>lazy-linker-transformer</artifactId>
-  <name>Lazy Linker Class File Transformer</name>
+  <artifactId>no-more-tears-transformer</artifactId>
+  <name>No More Tears Class File Transformer</name>
 
   <dependencies>
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>lazy-linker-runtime</artifactId>
+      <artifactId>no-more-tears-runtime</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>

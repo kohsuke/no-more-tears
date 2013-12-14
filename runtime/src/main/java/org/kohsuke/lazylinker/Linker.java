@@ -15,7 +15,7 @@ import static java.util.Arrays.asList;
  * <p>
  * The idea of a linker is as follows: normally, java compiler determines the exact method/field that are referenced
  * in the compiled source code, and at runtime, the said method/field must exist in its exact signature.
- * Lazy-linker relaxes this constraint. At compile time, the exact signature is computed just like before,
+ * no-more-tears relaxes this constraint. At compile time, the exact signature is computed just like before,
  * but at runtime, {@link Linker} instances get to choose the actual method/field that are linked, based on the
  * signature information calculated at the compile time.
  *
@@ -31,7 +31,7 @@ import static java.util.Arrays.asList;
  * Normally, you should insert your linkers after this default linker.
  *
  * <p>
- * Different call back method is provided for each kind of operation that the lazy-linker can defer the linking.
+ * Different call back method is provided for each kind of operation that the no-more-tears can defer the linking.
  * The meaning of the parameters is as follows:
  *
  * <dl>
@@ -42,7 +42,7 @@ import static java.util.Arrays.asList;
  * <dd>Name of the method/field specified in the original code to link to. Equivalent of {@link Member#getName()}
  *
  * <dt>signature
- * <dd>Signature of the method that was specified in the original code before it was modified by lazy-linker.
+ * <dd>Signature of the method that was specified in the original code before it was modified by no-more-tears.
  *
  * <dt>fieldType
  * <dd>Type of the field in the original code.
