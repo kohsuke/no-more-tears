@@ -1,4 +1,4 @@
-package org.kohsuke.lazylinker.asm;
+package org.kohsuke.nomoretears.asm;
 
 import org.objectweb.asm.tree.JumpInsnNode;
 import org.objectweb.asm.tree.LabelNode;

@@ -1,4 +1,4 @@
-package org.kohsuke.lazylinker;
+package org.kohsuke.nomoretears;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;

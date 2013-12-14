@@ -1,6 +1,6 @@
-package org.kohsuke.lazylinker;
+package org.kohsuke.nomoretears;
 
-import org.kohsuke.lazylinker.asm.Analyzer;
+import org.kohsuke.nomoretears.asm.Analyzer;
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.Handle;

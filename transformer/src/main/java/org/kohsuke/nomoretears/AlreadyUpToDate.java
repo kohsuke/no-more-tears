@@ -1,4 +1,4 @@
-package org.kohsuke.lazylinker;
+package org.kohsuke.nomoretears;
 
 /**
  * Indicates that this class file has already been transformed.

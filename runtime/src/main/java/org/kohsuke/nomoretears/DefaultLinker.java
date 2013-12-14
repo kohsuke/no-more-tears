@@ -1,4 +1,4 @@
-package org.kohsuke.lazylinker;
+package org.kohsuke.nomoretears;
 
 import java.lang.invoke.CallSite;
 import java.lang.invoke.ConstantCallSite;

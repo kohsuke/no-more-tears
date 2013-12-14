@@ -1,4 +1,4 @@
-package org.kohsuke.lazylinker;
+package org.kohsuke.nomoretears;
 
 import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.analysis.SourceInterpreter;

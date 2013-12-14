@@ -1,12 +1,8 @@
-package org.kohsuke.lazylinker;
+package org.kohsuke.nomoretears;
 
 import java.lang.invoke.CallSite;
 import java.lang.invoke.MethodHandles.Lookup;
 import java.lang.invoke.MethodType;
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
-
-import static java.util.Arrays.*;
 
 /**
  * Invokedynamic bootstrap methods.

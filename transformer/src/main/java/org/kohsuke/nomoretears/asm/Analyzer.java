@@ -1,4 +1,4 @@
-package org.kohsuke.lazylinker.asm;
+package org.kohsuke.nomoretears.asm;
 
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;

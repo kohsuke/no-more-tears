@@ -1,4 +1,4 @@
-package org.kohsuke.lazylinker;
+package org.kohsuke.nomoretears;
 
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.FieldVisitor;
