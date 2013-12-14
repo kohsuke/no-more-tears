@@ -135,16 +135,18 @@ public class Analyzer<V extends Value> implements Opcodes {
         current.setReturn(interpreter.newValue(Type.getReturnType(m.desc)));
         Type[] args = Type.getArgumentTypes(m.desc);
         int local = 0;
+        // KK PATCH FROM HERE
         if ((m.access & ACC_STATIC) == 0) {
             Type ctype = Type.getObjectType(owner);
-            current.setLocal(local++, interpreter.newValue(ctype));
+            current.setLocal(local++, newThisValue(ctype));
         }
         for (int i = 0; i < args.length; ++i) {
-            current.setLocal(local++, interpreter.newValue(args[i]));
+            current.setLocal(local++, newArgumentValue(i,args[i]));
             if (args[i].getSize() == 2) {
                 current.setLocal(local++, interpreter.newValue(null));
             }
         }
+        // KK PATCH UNTIL HERE
         while (local < m.maxLocals) {
             current.setLocal(local++, interpreter.newValue(null));
         }
@@ -275,6 +277,16 @@ public class Analyzer<V extends Value> implements Opcodes {
 
         return frames;
     }
+
+    // KK PATCH FROM HERE
+    protected V newArgumentValue(int index, Type arg) {
+        return interpreter.newValue(arg);
+    }
+
+    protected V newThisValue(Type ctype) {
+        return interpreter.newValue(ctype);
+    }
+    // KK PATCH UNTIL HERE
 
     private void findSubroutine(int insn, final Subroutine sub,
             final List<AbstractInsnNode> calls) throws AnalyzerException {
