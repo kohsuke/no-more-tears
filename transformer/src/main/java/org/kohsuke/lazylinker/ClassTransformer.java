@@ -40,6 +40,7 @@ public class ClassTransformer extends ClassVisitor {
     @Override
     public void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
         className = name;
+        version = Math.min(version,51); // we'll be adding invokeDynamic, so minimum Java7 is required
         super.visit(version, access, name, signature, superName, interfaces);
     }
 
