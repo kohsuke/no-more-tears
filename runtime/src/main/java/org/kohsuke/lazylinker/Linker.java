@@ -30,6 +30,10 @@ public class Linker {
         return new ConstantCallSite(caller.findSpecial(resolve(caller, owner), methodName, signature, caller.lookupClass()));
     }
 
+    public static CallSite invokeConstructor(Lookup caller,  String methodName, MethodType signature, String owner) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException {
+        signature = signature.changeReturnType(void.class);
+        return new ConstantCallSite(caller.findConstructor(resolve(caller,owner), signature));
+    }
 
 
     public static CallSite getField(Lookup caller,  String fieldName, MethodType signature, String owner) throws ClassNotFoundException, NoSuchFieldException, IllegalAccessException {

@@ -70,16 +70,19 @@ public class MethodTransformer extends MethodVisitor {
 
 
 
-    private static final Map<Integer,Handle> LINK_METHODS = new HashMap<Integer,Handle>();
+    static final Map<Integer,Handle> LINK_METHODS = new HashMap<Integer,Handle>();
+
+    static final Handle CONSTRUCTOR_LINKER;
 
     static {
         String sig = MethodType.methodType(CallSite.class,
             Lookup.class, String.class, MethodType.class, String.class).toMethodDescriptorString();
         String linkerName = Type.getInternalName(Linker.class);
 
+        CONSTRUCTOR_LINKER = new Handle(H_INVOKESTATIC, linkerName, "invokeConstructor", sig);
 
         LINK_METHODS.put(INVOKEVIRTUAL,     new Handle(H_INVOKESTATIC, linkerName, "invokeVirtual", sig));
-//        LINK_METHODS.put(INVOKESPECIAL,     new Handle(H_INVOKESTATIC, linkerName, "invokeSpecial", sig));
+        LINK_METHODS.put(INVOKESPECIAL,     new Handle(H_INVOKESTATIC, linkerName, "invokeSpecial", sig));
         LINK_METHODS.put(INVOKESTATIC,      new Handle(H_INVOKESTATIC, linkerName, "invokeStatic", sig));
         LINK_METHODS.put(INVOKEINTERFACE,   new Handle(H_INVOKESTATIC, linkerName, "invokeInterface", sig));
         LINK_METHODS.put(GETSTATIC,         new Handle(H_INVOKESTATIC, linkerName, "getStatic", sig));
